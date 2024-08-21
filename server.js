@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = 5050;
-const dotenv = require("dotenv").config()
+require("dotenv").config()
 const cors = require("cors");
 const { db } = require("./db")
 console.log(db)
@@ -72,15 +72,19 @@ app.post('/stopBikeSelection', async (req, res) => {
         res.status(500).json({ message: "Error stopping bike selection", error });
     }
 });
+app.get('/getBikeSelections', async (req, res) => {
+    try {
+        const selections = await User.find({});
+        res.status(200).json(selections);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching bike selections", error });
+    }
+});
 
-const server = () => {
-    db()
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-}
-server();
-
+db()
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 
 // data from the input should save in database that i have connected
